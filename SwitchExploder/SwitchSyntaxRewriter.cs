@@ -40,7 +40,7 @@ namespace SwitchExploder
 					.WithLabels(SyntaxFactory.List(new[]
 					{
 						SyntaxFactory.SwitchLabel(SyntaxKind.CaseSwitchLabel)
-						.WithCaseOrDefaultKeyword(SyntaxFactory.Token(SyntaxKind.CaseKeyword))
+						.WithCaseKeyword()
 						.WithValue(SyntaxFactory.MemberAccessExpression
 						(
 							SyntaxKind.SimpleMemberAccessExpression,
@@ -48,34 +48,15 @@ namespace SwitchExploder
 							SyntaxFactory.Token(SyntaxKind.DotToken),
 							SyntaxFactory.IdentifierName(name)
 						))
-						.WithColonToken(SyntaxFactory.Token(SyntaxKind.ColonToken))
+						.WithColonToken()
 					}))
-					.WithStatements(SyntaxFactory.List<StatementSyntax>(new[]
-					{
-						SyntaxFactory.BreakStatement()
-						.WithBreakKeyword(SyntaxFactory.Token(SyntaxKind.BreakKeyword))
-						.WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken))
-					}));
+					.WithBreakStatement();
 				sections.Add(section);
 			}
-
+			
 			sections.Add(SyntaxFactory.SwitchSection()
-				.WithLabels(SyntaxFactory.List(
-					new []
-					{
-						SyntaxFactory.SwitchLabel(SyntaxKind.DefaultSwitchLabel)
-						.WithCaseOrDefaultKeyword(SyntaxFactory.Token(SyntaxKind.DefaultKeyword))
-						.WithColonToken(SyntaxFactory.Token(SyntaxKind.ColonToken))
-					}))
-				.WithStatements(SyntaxFactory.List<StatementSyntax>(
-					new []
-					{
-						SyntaxFactory.ThrowStatement()
-						.WithThrowKeyword(SyntaxFactory.Token(SyntaxKind.ThrowKeyword))
-						.WithExpression(SyntaxFactory.ObjectCreationExpression(
-							SyntaxFactory.ParseTypeName(typeof(ArgumentOutOfRangeException).Name)).WithArgumentList(SyntaxFactory.ArgumentList()))
-						.WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken))
-					})));
+				.WithDefaultLabel()
+				.WithThrowStatement<ArgumentOutOfRangeException>());
 
 			return node.WithSections(SyntaxFactory.List(sections));
 		}
