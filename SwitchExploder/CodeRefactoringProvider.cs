@@ -24,7 +24,7 @@ namespace SwitchExploder
 			if (switchStatementNode == null)
 				return null;
 
-			var semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+			var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
 			var memberEx = switchStatementNode.Expression as MemberAccessExpressionSyntax;
 			if (memberEx == null)
@@ -56,7 +56,7 @@ namespace SwitchExploder
 			root = root.ReplaceNode(node, newNode);
 			document = document.WithSyntaxRoot(root);
 
-			return await Formatter.FormatAsync(document, null, cancellationToken);
+			return await Formatter.FormatAsync(document, null, cancellationToken).ConfigureAwait(false);
 		}
 	}
 }
